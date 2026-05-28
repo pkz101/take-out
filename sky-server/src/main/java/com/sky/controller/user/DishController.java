@@ -25,7 +25,7 @@ public class DishController {
     @Autowired
     private DishService dishService;
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @GetMapping("/list")
     @ApiOperation("查询指定分类下的菜品")
@@ -33,7 +33,7 @@ public class DishController {
         log.info("查询分类下的菜品：{}",categoryId);
         String key = "dish_" + categoryId;
         // 缓存中是否有对应的菜品
-        List<DishVO>  list = (List<DishVO>) redisTemplate.opsForValue().get(key);
+        List<DishVO> list = getCachedDishList(key);
         // 缓存中有直接返回
         if (list != null && list.size() > 0){
             return Result.success(list);
@@ -49,5 +49,15 @@ public class DishController {
         log.info("查询结果：{}",list);
 
         return Result.success(list);
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<DishVO> getCachedDishList(String key) {
+        Object cached = redisTemplate.opsForValue().get(key);
+        if (!(cached instanceof List<?>)) {
+            return null;
+        }
+
+        return (List<DishVO>) cached;
     }
 }

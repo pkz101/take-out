@@ -3,9 +3,13 @@ package com.sky.service;
 import com.sky.dto.OrdersCancelDTO;
 import com.sky.dto.OrdersConfirmDTO;
 import com.sky.dto.OrdersPageQueryDTO;
+import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersRejectionDTO;
+import com.sky.dto.OrdersSubmitDTO;
 import com.sky.result.PageResult;
+import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
+import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
 
 public interface OrderService {
@@ -16,6 +20,12 @@ public interface OrderService {
      * @return
      */
     PageResult pageQuery(Integer page, Integer pageSize, Integer status);
+
+    OrderSubmitVO submitOrder(OrdersSubmitDTO ordersSubmitDTO);
+
+    OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) throws Exception;
+
+    void paySuccess(String orderNumber);
 
     /**
      * 订单详情
@@ -78,4 +88,6 @@ public interface OrderService {
      * @param id
      */
     void complete(Long id);
+
+    void reminder(Long id);
 }
