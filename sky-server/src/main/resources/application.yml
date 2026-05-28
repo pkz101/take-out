@@ -1,0 +1,64 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-circular-references: true
+  datasource:
+    druid:
+      driver-class-name: ${sky.datasource.driver-class-name}
+      url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: ${sky.datasource.username}
+      password: ${sky.datasource.password}
+  redis:
+    # Redis服务地址（本地为localhost，生产填实际IP/域名）
+    host: ${sky.redis.host}
+    # 端口（默认6379，若修改过需对应）
+    port: ${sky.redis.port}
+    # 密码（若Redis未设置密码可省略，生产必须设置）
+    password: ${sky.redis.password}
+    # 数据库索引（Redis默认有16个库，0-15，默认用0）
+    database: ${sky.redis.database}
+
+mybatis:
+  #mapper配置文件
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.sky.entity
+  configuration:
+    #开启驼峰命名
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com:
+      sky:
+        mapper: debug
+        service: info
+        controller: info
+
+sky:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: itcast
+    # 设置jwt过期时间
+    admin-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    admin-token-name: token
+    user-secret-key: itheima
+    user-ttl: 7200000
+    user-token-name: authentication
+  alioss:
+    endpoint: ${sky.alioss.endpoint}
+    access-key-id: ${sky.alioss.access-key-id}
+    access-key-secret: ${sky.alioss.access-key-secret}
+    bucket-name: ${sky.alioss.bucket-name}
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
+  shop:
+    address: ${sky.shop.address}
+  gaode:
+    key: ${sky.gaode.key}
+
